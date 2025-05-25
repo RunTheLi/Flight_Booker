@@ -1,0 +1,27 @@
+<h2>Flight Confirmation</h2>
+<p>
+  <strong>From:</strong> <%= @booking.flight.departure_airport.code %><br>
+  <strong>To:</strong> <%= @booking.flight.arrival_airport.code %><br>
+  <strong>Date:</strong> <%= @booking.flight.departure_time.strftime("%B %d, %Y %I:%M %p") %><br>
+  <strong>Flight Duration:</strong> <%= @booking.flight.duration %> minutes
+</p>
+
+<%= form_with model: @booking, url: bookings_path, local: true do |f| %>
+  <%= f.hidden_field :flight_id %>
+
+  <h3>Passenger Information</h3>
+  <%= f.fields_for :passengers do |p| %>
+    <div class="passenger-fields">
+      <p>
+        <%= p.label :name %><br>
+        <%= p.text_field :name %>
+      </p>
+      <p>
+        <%= p.label :email %><br>
+        <%= p.email_field :email %>
+      </p>
+    </div>
+  <% end %>
+
+  <%= f.submit "Book Flight" %>
+<% end %>
