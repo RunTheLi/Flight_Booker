@@ -24,3 +24,20 @@
     <%= submit_tag "Search Flights" %>
   </div>
 <% end %>
+
+<% if @flights.any? %>
+  <h2>Available Flights</h2>
+  <ul>
+    <% @flights.each do |flight| %>
+      <li>
+        <%= flight.departure_airport.code %> ➡️ 
+        <%= flight.arrival_airport.code %> |
+        <%= flight.departure_time.strftime("%B %d, %Y %I:%M %p") %> |
+        Duration: <%= flight.duration %> minutes |
+        <%= button_to "Select", new_booking_path(flight_id: flight.id, passengers: params[:passengers]), method: :get %>
+      </li>
+    <% end %>
+  </ul>
+<% elsif params[:departure_airport_id].present? %>
+  <p>No matching flights found. Please try a different search.</p>
+<% end %>
