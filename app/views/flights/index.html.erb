@@ -27,17 +27,21 @@
 
 <% if @flights.any? %>
   <h2>Available Flights</h2>
-  <ul>
-    <% @flights.each do |flight| %>
-      <li>
-        <%= flight.departure_airport.code %> ➡️ 
-        <%= flight.arrival_airport.code %> |
-        <%= flight.departure_time.strftime("%B %d, %Y %I:%M %p") %> |
-        Duration: <%= flight.duration %> minutes |
-        <%= button_to "Select", new_booking_path(flight_id: flight.id, passengers: params[:passengers]), method: :get %>
-      </li>
-    <% end %>
-  </ul>
+
+  <%= form_with url: new_booking_path, method: :get, local: true do %>
+    <ul>
+      <% @flights.each do |flight| %>
+        <li>
+          <%= radio_button_tag :flight_id, flight.id, params[:flight_id].to_i == flight.id %>
+          <%= label_tag "flight_id_#{flight.id}", "#{flight.departure_airport.code} ➡️ #{flight.arrival_airport.code} | #{flight.departure_time.strftime("%B %d, %Y %I:%M %p")} | Duration: #{flight.duration} mins" %>
+        </li>
+      <% end %>
+    </ul>
+
+    <%= hidden_field_tag :passengers, params[:passengers] %>
+    <%= submit_tag "Continue to Passenger Info" %>
+  <% end %>
+
 <% elsif params[:departure_airport_id].present? %>
   <p>No matching flights found. Please try a different search.</p>
 <% end %>
