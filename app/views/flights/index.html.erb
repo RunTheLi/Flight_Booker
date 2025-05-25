@@ -1,0 +1,26 @@
+<h1>search flight</h1>
+<%= form_with url: flights_path, method: :get, local: true do %>
+  <div>
+    <%= label_tag :departure_airport_id, "Departure Airport" %>
+    <%= select_tag :departure_airport_id, options_from_collection_for_select(@airports, :id, :code, params[:departure_airport_id]) %>
+  </div>
+
+  <div>
+    <%= label_tag :arrival_airport_id, "Arrival Airport" %>
+    <%= select_tag :arrival_airport_id, options_from_collection_for_select(@airports, :id, :code, params[:arrival_airport_id]) %>
+  </div>
+
+  <div>
+    <%= label_tag :date, "Flight Date" %>
+    <%= select_tag "search[date]", options_for_select(@available_dates.map { |d| [d.strftime("%B %d, %Y"), d] }, params.dig(:search, :date)) %>
+  </div>
+
+  <div>
+    <%= label_tag :passengers, "Passengers" %>
+    <%= select_tag :passengers, options_for_select((1..4).map { |n| [n, n] }, params[:passengers]) %>
+  </div>
+
+  <div>
+    <%= submit_tag "Search Flights" %>
+  </div>
+<% end %>

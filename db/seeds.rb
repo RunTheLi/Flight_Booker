@@ -17,3 +17,19 @@ Airport.create!([
   { code: "ORD" },
   { code: "ATL" }
 ])
+
+Flight.destroy_all
+
+jfk = Airport.find_by(code: "JFK")
+lax = Airport.find_by(code: "LAX")
+sfo = Airport.find_by(code: "SFO")
+ord = Airport.find_by(code: "ORD")
+atl = Airport.find_by(code: "ATL")
+
+Flight.create!([
+  { departure_airport: jfk, arrival_airport: sfo, departure_time: DateTime.now + 1.day, duration: 360 },
+  { departure_airport: lax, arrival_airport: jfk, departure_time: DateTime.now + 2.days, duration: 300 },
+  { departure_airport: atl, arrival_airport: ord, departure_time: DateTime.now + 3.days, duration: 120 },
+  { departure_airport: sfo, arrival_airport: lax, departure_time: DateTime.now + 1.day + 5.hours, duration: 90 },
+  { departure_airport: ord, arrival_airport: atl, departure_time: DateTime.now + 2.days + 3.hours, duration: 130 }
+])
